@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>我想对你说</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #ffecd2, #fcb69f);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+  }
+  #container {
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    padding: 0 20px;
+  }
+  h1 {
+    color: #ff5e62;
+    font-size: 3.2em;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+  }
+  p {
+    color: #333;
+    font-size: 1.5em;
+    line-height: 1.8;
+    max-width: 720px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+  .hint {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #666;
+    font-size: 1.1em;
+    animation: breathe 2s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+  .heart {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #ff4d6d;
+    transform: rotate(45deg);
+    animation: float 3s ease-in-out infinite;
+    opacity: 0.8;
+  }
+  .heart:before,
+  .heart:after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    background-color: #ff4d6d;
+    border-radius: 50%;
+    position: absolute;
+  }
+  .heart:before { top: -10px; left: 0; }
+  .heart:after  { top: 0; left: -10px; }
+  @keyframes float {
+    0% { transform: rotate(45deg) translateY(0) scale(1); opacity: 1; }
+    100% { transform: rotate(45deg) translateY(-800px) scale(1.5); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+  <div id="container">
+    <h1 id="title"></h1>
+    <p id="content"></p>
+  </div>
+
+  <div class="hint">点击屏幕，继续聆听我的心声</div>
+
+  <script>
+    const texts = [
+      "冬至了，思念如泉涌般不断",
+      "你的出现，让平凡的日子不再无趣",
+      "愿在下一年，你也能岁岁平安",
+      "我爱你 ❤️"
+    ];
+
+    const container = document.getElementById("container");
+    const title = document.getElementById("title");
+    const content = document.getElementById("content");
+
+    let step = 0;
+    container.style.opacity = "1";
+    container.style.transform = "translateY(0)";
+
+    function nextStep() {
+      if (step < texts.length) {
+        content.textContent = texts[step];
+        title.textContent = step === texts.length - 1 ? "❤️" : "";
+        if (step === texts.length - 1) createHearts(80); // 生成更多爱心
+        step++;
+      }
+    }
+
+    function createHearts(count) {
+      for (let i = 0; i < count; i++) {
+        const heart = document.createElement("div"); // 正确创建新元素
+        heart.className = "heart";
+        heart.style.left = (Math.random() * window.innerWidth) + "px";
+        heart.style.top = (Math.random() * window.innerHeight) + "px";
+        heart.style.animationDuration = (Math.random() * 2 + 2) + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+      }
+    }
+
+    document.body.addEventListener("click", nextStep);
+    nextStep();
+  </script>
+</body>
+</html>
